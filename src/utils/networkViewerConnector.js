@@ -3,24 +3,24 @@ const http = require('http');
 const https = require('https');
 const { unzip } = require('zlib');
 
-// const WSocket = require('ws');
+const WSocket = require('ws');
 
-// const wsServer = new WSocket.Server({ port: 12346, host: '127.0.0.1' });
+const wsServer = new WSocket.Server({ port: 12346, host: '127.0.0.1' });
 
-// wsServer.on('error', e => {
-//   // eslint-disable-next-line no-console
-//   console.error(e);
-// });
+wsServer.on('error', e => {
+  // eslint-disable-next-line no-console
+  console.error(e);
+});
 
-// function sendMsg(msg) {
-//   if (wsServer) {
-//     wsServer.clients.forEach(function each(client) {
-//       if (client.readyState === WSocket.OPEN) {
-//         client.send(JSON.stringify(msg));
-//       }
-//     });
-//   }
-// }
+function sendMsg(msg) {
+  if (wsServer) {
+    wsServer.clients.forEach(function each(client) {
+      if (client.readyState === WSocket.OPEN) {
+        client.send(JSON.stringify(msg));
+      }
+    });
+  }
+}
 
 let uniqID = 0;
 const pid = process.pid;
@@ -46,7 +46,7 @@ function override(module) {
               statusMessage: response.statusMessage,
               error: e,
             };
-            console.log(res);
+            sendMsg(res);
           });
           if (response.headers['content-encoding'] === 'gzip') {
             response.on('data', d => {
@@ -70,7 +70,7 @@ function override(module) {
                   statusMessage: response.statusMessage,
                   body: tryParse(buffer.toString()),
                 };
-                console.log(res);
+                sendMsg(res);
               });
             });
           } else {
@@ -89,7 +89,7 @@ function override(module) {
                 body: tryParse(body.join('')),
               };
 
-              console.log(res);
+              sendMsg(res);
             });
           }
         }
@@ -128,7 +128,7 @@ function override(module) {
         headers: options.headers || {},
         body: typeof body === 'string' ? tryParse(body) : body,
       };
-      console.log('logger', log);
+      sendMsg(log);
       return origEnd.apply(this, args);
     };
   }
