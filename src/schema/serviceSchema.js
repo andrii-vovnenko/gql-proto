@@ -1,6 +1,6 @@
-const { gql } = require("apollo-server");
+import { gql } from "apollo-server-express";
 
-const serviceTypeDefs = gql`
+export default gql`
   type Service {
     id: ID!
     name: String!
@@ -15,5 +15,3 @@ const serviceTypeDefs = gql`
     service(id: ID!): Service
   }
 `;
-
-module.exports = serviceTypeDefs;

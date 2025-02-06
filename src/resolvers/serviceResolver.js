@@ -1,17 +1,12 @@
-const { getServices, getServiceById } = require("../data/serviceData");
-const { getDocumentsByServiceId } = require("../data/documentData");
-
-const serviceResolvers = {
+export default {
   Query: {
-    services: async () => await getServices(),
-    service: async (_, { id }) => await getServiceById(id),
+    services: async (_, __, { container }) => container.services.services.getServices(),
+    service: async (_, { id }, { container }) => container.services.services.getServiceById(id),
   },
   Service: {
-    documents: async (parent) => await getDocumentsByServiceId(parent.id),
+    documents: async (parent, _, { container }) => container.services.documents.getDocumentsByServiceId(parent.id),
     andere: async (parent) => {
       return !parent.isMale ? "Frau" : "Herr";
     },
   },
 };
-
-module.exports = serviceResolvers;

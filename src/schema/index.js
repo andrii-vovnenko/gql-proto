@@ -1,4 +1,4 @@
-const serviceTypeDefs = require("./serviceSchema");
-const documentTypeDefs = require("./documentSchema");
+import serviceTypeDefs from './serviceSchema.js';
+import documentTypeDefs from './documentSchema.js';
 
-module.exports = [serviceTypeDefs, documentTypeDefs];
+export default [serviceTypeDefs, documentTypeDefs];

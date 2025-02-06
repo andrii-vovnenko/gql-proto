@@ -1,14 +1,9 @@
-const { getDocuments, getDocumentById } = require("../data/documentData");
-const { getServiceById } = require("../data/serviceData");
-
-const documentResolvers = {
+export default {
   Query: {
-    documents: async () => await getDocuments(),
-    document: async (_, { id }) => await getDocumentById(id),
+    documents: async (_, __, { container }) => container.services.documents.getDocuments( ),
+    document: async (_, { id }, { container }) => container.services.documents.getDocumentById(id),
   },
   Document: {
-    service: async (document) => await getServiceById(document.serviceId),
+    service: async (document, _, { container }) => container.services.services.getServiceById(document.serviceId),
   },
 };
-
-module.exports = documentResolvers;

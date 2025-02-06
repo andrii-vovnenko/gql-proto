@@ -1,4 +1,4 @@
-const serviceResolvers = require("./serviceResolver");
-const documentResolvers = require("./documentResolver");
+import serviceResolvers from './serviceResolver.js';
+import documentResolvers from './documentResolver.js';
 
-module.exports = [serviceResolvers, documentResolvers];
+export default [serviceResolvers, documentResolvers];
